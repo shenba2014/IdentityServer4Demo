@@ -1,8 +1,6 @@
 ﻿using IdentityServer4.Models;
-using System;
+using IdentityServer4.Test;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace DemoIdentityServer
 {
@@ -29,6 +27,35 @@ namespace DemoIdentityServer
 						new Secret("secret".Sha256())
 					},
 					AllowedScopes = {"api1"}
+				},
+				new Client
+				{
+					ClientId = "testUser",
+					AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
+					ClientSecrets =
+					{
+						new Secret("secret".Sha256())
+					},
+					AllowedScopes = {"api1"}
+				}
+			};
+		}
+
+		public static List<TestUser> GetUsers()
+		{
+			return new List<TestUser>
+			{
+				new TestUser
+				{
+					SubjectId = "1",
+					Username = "junwen",
+					Password = "password"
+				},
+				new TestUser
+				{
+					SubjectId = "2",
+					Username = "bob",
+					Password = "password"
 				}
 			};
 		}
