@@ -2,13 +2,14 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace DemoConsoleClient
 {
-    class Program
-    {
-        static void Main(string[] args)
-        {
+	class Program
+	{
+		static void Main(string[] args)
+		{
 			requestsApi();
 			Console.ReadLine();
 		}
@@ -22,11 +23,11 @@ namespace DemoConsoleClient
 				return;
 			}
 
-			requestByCredential(disco);
-			requestByTestUser(disco);
+			await requestByCredential(disco);
+			await requestByTestUser(disco);
 		}
 
-		static async void requestByCredential(DiscoveryResponse disco)
+		static async Task requestByCredential(DiscoveryResponse disco)
 		{
 			Console.WriteLine("access resource by client credential");
 			var tokenClient = new TokenClient(disco.TokenEndpoint, "client", "secret");
@@ -36,10 +37,10 @@ namespace DemoConsoleClient
 				Console.WriteLine(tokenResponse.Error);
 				return;
 			}
-			requestApi(tokenResponse);
+			await requestApi(tokenResponse);
 		}
 
-		static async void requestByTestUser(DiscoveryResponse disco)
+		static async Task requestByTestUser(DiscoveryResponse disco)
 		{
 			Console.WriteLine("access resource by test user");
 			var tokenClient = new TokenClient(disco.TokenEndpoint, "testUser", "secret");
@@ -49,10 +50,10 @@ namespace DemoConsoleClient
 				Console.WriteLine(tokenResponse.Error);
 				return;
 			}
-			requestApi(tokenResponse);
+			await requestApi(tokenResponse);
 		}
 
-		static async void requestApi(TokenResponse tokenResponse)
+		static async Task requestApi(TokenResponse tokenResponse)
 		{
 			Console.WriteLine(tokenResponse.Json);
 			using (var client = new HttpClient())
