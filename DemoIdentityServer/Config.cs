@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using IdentityServer4;
 using IdentityServer4.Models;
 using IdentityServer4.Test;
 
@@ -37,6 +38,18 @@ namespace DemoIdentityServer
 						new Secret("secret".Sha256())
 					},
 					AllowedScopes = {"api1"}
+				},
+				new Client {
+					ClientId = "mvc",
+					ClientName = "mvc client",
+					AllowedGrantTypes = GrantTypes.Implicit,
+					AllowedScopes = new List<string>
+					{
+						IdentityServerConstants.StandardScopes.OpenId,
+						IdentityServerConstants.StandardScopes.Profile
+					},
+					RedirectUris = new List<string> {"http://localhost:61140/signin-oidc"},
+					PostLogoutRedirectUris = new List<string> { "http://localhost:61140" }
 				}
 			};
 		}
@@ -57,6 +70,15 @@ namespace DemoIdentityServer
 					Username = "bob",
 					Password = "password"
 				}
+			};
+		}
+
+		public static IEnumerable<IdentityResource> GetIdentityResources()
+		{
+			return new List<IdentityResource>
+			{
+				new IdentityResources.OpenId(),
+				new IdentityResources.Profile(),
 			};
 		}
 	}

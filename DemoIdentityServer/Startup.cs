@@ -16,29 +16,10 @@ namespace DemoIdentityServer
 
 			services.AddIdentityServer()
 				.AddDeveloperSigningCredential()
+				.AddInMemoryIdentityResources(Config.GetIdentityResources())
 				.AddInMemoryApiResources(Config.GetApiResource())
 				.AddInMemoryClients(Config.GetClients())
 				.AddTestUsers(Config.GetUsers());
-
-			services.AddAuthentication()
-				.AddOpenIdConnect("demoidsrv", "IdentityServer", options =>
-				{
-					options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
-					options.SignOutScheme = IdentityServerConstants.SignoutScheme;
-
-					options.Authority = "https://demo.identityserver.io/";
-					options.ClientId = "implicit";
-					options.ResponseType = "id_token";
-					options.SaveTokens = true;
-					options.CallbackPath = new PathString("/signin-idsrv");
-					options.RemoteSignOutPath = new PathString("/signout-idsrv");
-
-					options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
-					{
-						NameClaimType = "name",
-						RoleClaimType = "role"
-					};
-				});
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -44,7 +44,7 @@ namespace DemoIdentityServer.Account
 			TestUserStore users = null)
 		{
 			// if the TestUserStore is not in DI, then we'll just use the global users collection
-			_users = users ?? new TestUserStore(TestUsers.Users);
+			_users = new TestUserStore(TestUsers.Users);
 			_interaction = interaction;
 			_events = events;
 			_account = new AccountService(interaction, httpContextAccessor, schemeProvider, clientStore);
